@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApplication1.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
@@ -18,7 +20,7 @@ namespace WebApplication1.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
+        /*[HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
@@ -28,6 +30,19 @@ namespace WebApplication1.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+        }*/
+
+        [HttpDelete("{id}")]
+        public ActionResult Delete(Guid id) {
+            return NotFound();
+        }
+
+        [AllowAnonymous]
+        [HttpGet("callback")]
+        public IActionResult Callback([FromQuery] string code, [FromQuery] string state)
+        {
+            // For testing, just show the code
+            return Content($"Authorization code: {code}");
         }
     }
 }
